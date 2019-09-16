@@ -15,7 +15,8 @@
         "member-ordering": false,
         "member-access": true,
         "no-console": false,
-        "no-empty": false
+        "no-empty": false,
+        "variable-name": false
     },
     "rulesDirectory": []
 }
