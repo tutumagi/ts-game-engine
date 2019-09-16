@@ -1,3 +1,7 @@
+import { Engine } from "./engine";
+
+// entry
 window.onload = () => {
-    document.body.innerHTML += "Foo";
+    const engine = new Engine();
+    engine.start();
 };
