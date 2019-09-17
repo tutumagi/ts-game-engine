@@ -1,4 +1,5 @@
 import { gl, GLUtilities } from "./gl/gl";
+import { GLBuffer } from "./gl/glBuffer";
 import { Shader } from "./gl/shader";
 
 /**
@@ -7,7 +8,7 @@ import { Shader } from "./gl/shader";
 export class Engine {
     private _canvas: HTMLCanvasElement;
     private _shader: Shader;
-    private _buffer: WebGLBuffer;
+    private _buffer: GLBuffer;
 
     /**
      * Create a new Engine
@@ -60,12 +61,9 @@ export class Engine {
          */
         gl.clear(gl.COLOR_BUFFER_BIT);
         // this._shader.use();
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
-        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(0);
-
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        this._buffer.bind(false);
+        this._buffer.draw();
+        // this._buffer.unbind();
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));
@@ -74,15 +72,18 @@ export class Engine {
     private createBuffer() {
         const vertexs = [0, 0, 0, 0, 0.5, 0, 0.5, 0.5, 0.5];
 
-        this._buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
-        // gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
-        // gl.enableVertexAttribArray(0);
+        this._buffer = new GLBuffer(3);
 
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexs), gl.STATIC_DRAW);
+        this._buffer.pushBackData(vertexs);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, undefined);
-        gl.disableVertexAttribArray(0);
+        const positionLocation = this._shader.getAttributeLocation(`a_position`);
+        this._buffer.addAttributeLocation({
+            location: positionLocation,
+            size: 3,
+            offset: 0,
+        });
+        this._buffer.upload();
+        this._buffer.unbind();
     }
 
     private loadShaders() {
