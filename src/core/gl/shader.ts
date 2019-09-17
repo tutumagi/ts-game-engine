@@ -3,9 +3,9 @@ import { gl } from "./gl";
 /**
  * Shader is a tiny program uploade to GPU
  *
- * vertex shader
- *
- * fragment shader
+ * vertex shader  : load -> compile ->  |
+ *                                          -> link program -> use program
+ * fragment shader : load -> compile -> |
  */
 export class Shader {
     private _name: string;
@@ -53,11 +53,14 @@ export class Shader {
     }
 
     private createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader) {
+        // create
         this._program = gl.createProgram();
 
+        // attach
         gl.attachShader(this._program, vertexShader);
         gl.attachShader(this._program, fragmentShader);
 
+        // link
         gl.linkProgram(this._program);
 
         const error = gl.getProgramInfoLog(this._program);

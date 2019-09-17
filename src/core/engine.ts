@@ -76,8 +76,8 @@ export class Engine {
 
         this._buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
-        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(0);
+        // gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+        // gl.enableVertexAttribArray(0);
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexs), gl.STATIC_DRAW);
 
