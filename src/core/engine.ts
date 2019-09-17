@@ -7,6 +7,7 @@ import { Shader } from "./gl/shader";
 export class Engine {
     private _canvas: HTMLCanvasElement;
     private _shader: Shader;
+    private _buffer: WebGLBuffer;
 
     /**
      * Create a new Engine
@@ -19,11 +20,13 @@ export class Engine {
     public start() {
         this._canvas = GLUtilities.initialize();
 
-        gl.clearColor(1, 0, 0, 1);
+        gl.clearColor(0, 0, 0, 1);
 
         this.loadShaders();
         this._shader.use();
+        this.createBuffer();
 
+        this.resize();
         this.loop();
     }
 
@@ -34,6 +37,17 @@ export class Engine {
         if (this._canvas !== undefined) {
             this._canvas.width = window.innerWidth;
             this._canvas.height = window.innerHeight;
+
+            /*
+                    1
+            ┌───────┬───────┐
+            │               │
+            ├ ─ ─ ─ ┼ ─ ─ ─ ┤
+          -1│    0,0        │1
+            └───────┴───────┘
+                   -1
+            */
+            gl.viewport(0, 0, this._canvas.width, this._canvas.height);
         }
     }
 
@@ -45,10 +59,30 @@ export class Engine {
          * gl.clear tell the device what kind should be cleared if you do something use `clearxxx`
          */
         gl.clear(gl.COLOR_BUFFER_BIT);
-        this._shader.use();
+        // this._shader.use();
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
+        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(0);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));
+    }
+
+    private createBuffer() {
+        const vertexs = [0, 0, 0, 0, 0.5, 0, 0.5, 0.5, 0.5];
+
+        this._buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
+        gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(0);
+
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexs), gl.STATIC_DRAW);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, undefined);
+        gl.disableVertexAttribArray(0);
     }
 
     private loadShaders() {
