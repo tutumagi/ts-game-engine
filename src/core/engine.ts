@@ -60,10 +60,14 @@ export class Engine {
          * gl.clear tell the device what kind should be cleared if you do something use `clearxxx`
          */
         gl.clear(gl.COLOR_BUFFER_BIT);
-        // this._shader.use();
+
+        // set uniform
+        const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_color");
+        // set uniform var the special value
+        gl.uniform4f(colorPosition, 1, 1, 0, 1);
+
         this._buffer.bind(false);
         this._buffer.draw();
-        // this._buffer.unbind();
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));
@@ -97,8 +101,10 @@ export class Engine {
 
         const fragmentShaderSource = `
         precision mediump float;
+        uniform vec4 u_color;
+
         void main() {
-            gl_FragColor = vec4(1.0);
+            gl_FragColor = u_color;
         }
         `;
 

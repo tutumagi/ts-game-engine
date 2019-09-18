@@ -17,6 +17,10 @@ export interface AttributeInfo {
 }
 
 /**
+ * https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-shaders-and-glsl.html#toc
+ */
+
+/**
  * Represent the WebGL buffer
  */
 export class GLBuffer {
@@ -80,12 +84,18 @@ export class GLBuffer {
         gl.bindBuffer(this._targetBufferType, this._buffer);
         if (this._hasAttributeLocation) {
             for (const it of this._attributes) {
+                //  var numComponents = 3;  // (x, y, z)
+                // var type = gl.FLOAT;    // 32位浮点数据
+                // var normalize = false;  // 不标准化
+                // var offset = 0;         // 从缓冲起始位置开始获取
+                // var stride = 0;         // 到下一个数据跳多少位内存
+                //                         // 0 = 使用当前的单位个数和单位长度 （ 3 * Float32Array.BYTES_PER_ELEMENT ）
                 gl.vertexAttribPointer(
-                    it.location,
+                    it.location, //
                     it.size,
-                    this._dataType,
+                    this._dataType, //
                     normalized,
-                    this._stride,
+                    this._stride, // 从缓冲的
                     it.offset * this._typeSize,
                 );
                 gl.enableVertexAttribArray(it.location);

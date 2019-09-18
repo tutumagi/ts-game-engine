@@ -11,7 +11,10 @@ export class Shader {
     private _name: string;
     private _program: WebGLProgram;
     private _attributes: {
-        [key: string]: number;
+        [name: string]: number;
+    } = {};
+    private _uniforms: {
+        [name: string]: WebGLUniformLocation;
     } = {};
 
     /**
@@ -29,6 +32,7 @@ export class Shader {
         this.createProgram(vertexShader, fragmentShader);
 
         this.detectAttributes();
+        this.detectUniforms();
     }
 
     /** The name of the shader */
@@ -48,6 +52,13 @@ export class Shader {
             throw new Error(`Unable to find attribute named ${name} in shader named ${this._name}`);
         }
         return this._attributes[name];
+    }
+
+    public getUniformLocation(name: string): WebGLUniformLocation {
+        if (this._uniforms[name] === undefined) {
+            throw new Error(`Unable to find uniform named ${name} in shader named ${this._name}`);
+        }
+        return this._uniforms[name];
     }
 
     private loadShader(source: string, shaderType: number): WebGLShader {
@@ -95,4 +106,28 @@ export class Shader {
             this._attributes[attributeInfo.name] = gl.getAttribLocation(this._program, attributeInfo.name);
         }
     }
+
+    private detectUniforms() {
+        const uniformCount = gl.getProgramParameter(this._program, gl.ACTIVE_UNIFORMS);
+        for (let i = 0; i < uniformCount; ++i) {
+            const uniformInfo: WebGLActiveInfo = gl.getActiveUniform(this._program, i);
+            if (!uniformInfo) {
+                break;
+            }
+            this._uniforms[uniformInfo.name] = gl.getUniformLocation(this._program, uniformInfo.name);
+        }
+    }
 }
+
+/**
+ * [WebGL Fundamentals](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-fundamentals.html)
+ *
+ * 每个顶点调用一次（顶点）着色器，每次调用都需要设置一个特殊的全局变量gl_Position， 该变量的值就是裁减空间坐标值。
+ *
+ * 顶点着色器需要的数据，可以通过以下三种方式获得。
+ * Attributes 属性 (从缓冲中获取的数据)
+ * Uniforms 全局变量 (在一次绘制中对所有顶点保持一致值)
+ * Textures 纹理 (从像素或纹理元素中获取的数据)
+ *
+ *
+ */
