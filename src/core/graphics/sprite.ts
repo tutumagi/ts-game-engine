@@ -44,16 +44,28 @@ export class Sprite {
 
         // two triangle = one rect
         // prettier-ignore
-        const vertexs = [
-                         // xyz,  uv
-                         0, 0, 0,                       0,      0,
-                         0, this._height, 0,            0,      1.0,
-                         this._width, this._height, 0,  1.0,    1.0,
+        // const vertexs = [
+        //                  // xyz,  uv
+        //                  0, 0, 0,                       0,      0,
+        //                  0, this._height, 0,            0,      1.0,
+        //                  this._width, this._height, 0,  1.0,    1.0,
 
-                         this._width, this._height, 0,  1.0,    1.0,
-                         this._width, 0, 0,             1.0,    0,
-                         0, 0, 0,                       0,      0,
-                        ];
+        //                  this._width, this._height, 0,  1.0,    1.0,
+        //                  this._width, 0, 0,             1.0,    0,
+        //                  0, 0, 0,                       0,      0,
+        //                 ];
+        // prettier-ignore
+
+        const vertexs = [
+            // xyz
+            0, 0, 0,
+            0, this._height, 0,
+            this._width, this._height, 0,
+
+            this._width, this._height, 0,
+            this._width, 0, 0,
+            0, 0, 0,
+        ];
 
         this._buffer = new GLBuffer(3);
 
@@ -65,7 +77,7 @@ export class Sprite {
 
         const texCoordAttribute: AttributeInfo = {
             location: 1,
-            offset: 3,
+            offset: 0,
             size: 2,
         };
 
@@ -74,7 +86,7 @@ export class Sprite {
         // the postion localtion is zero in every shader, so we hard code the loacation here
         // const positionLocation = 0;
         this._buffer.addAttributeLocation(positionAttribute);
-        this._buffer.addAttributeLocation(texCoordAttribute);
+        // this._buffer.addAttributeLocation(texCoordAttribute);
         this._buffer.upload();
         this._buffer.unbind();
     }
@@ -82,12 +94,13 @@ export class Sprite {
     public update(time: number) {}
 
     public draw(shader: Shader) {
+        // this.load();
         // if (this._texture.isLoaded) {
         //     this.load();
         // }
-        this._texture.activeAndBind(0);
-        const diffuseLocation = shader.getUniformLocation("u_diffuse");
-        gl.uniform1i(diffuseLocation, 0);
+        // this._texture.activeAndBind(0);
+        // const diffuseLocation = shader.getUniformLocation("u_diffuse");
+        // gl.uniform1i(diffuseLocation, 0);
 
         if (this._buffer) {
             this._buffer.bind(false);

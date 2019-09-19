@@ -86,7 +86,7 @@ export class Engine {
         // set uniform
         const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_tint");
         // set uniform var the special value
-        gl.uniform4f(colorPosition, 1, 1, 1, 1);
+        gl.uniform4f(colorPosition, 1, 0.5, 1, 1);
 
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
@@ -95,6 +95,7 @@ export class Engine {
         gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this._sprite.position).data));
 
         this._sprite.update(time);
+
         this._sprite.draw(this._shader);
 
         // console.log(`loop`);
@@ -102,6 +103,8 @@ export class Engine {
     }
 
     private loadShaders() {
+        // https://stackoverflow.com/questions/17537879/in-webgl-what-are-the-differences-between-an-attribute-a-uniform-and-a-varying
+        // attribute vs uniform vs varying
         /**
          * 在GLSL中为什么变量的前缀都是 a_, u_ 或 v_ ？
          * 那只是一个命名约定，不是强制要求的。 但是对我来说可以轻松通过名字知道值从哪里来，
@@ -113,14 +116,16 @@ export class Engine {
         // glsl
         const vertexShaderSource = `
         attribute vec3 a_position;
+        attribute vec2 a_texCoord;
 
         uniform mat4 u_projection;
         uniform mat4 u_model;
 
-        varying vec2 v_texCoord;
+        // varying vec2 v_texCoord;
 
         void main() {
             gl_Position = u_projection * u_model * vec4(a_position, 1.0);
+            // v_texCoord = a_texCoord;
             // gl_Position = u_projection * vec4(a_position, 1.0);
         }
         `;
@@ -132,10 +137,11 @@ export class Engine {
         uniform vec4 u_tint;
         uniform sampler2D u_diffuse;
 
-        varying vec2 v_texCoord;
+        // varying vec2 v_texCoord;
 
         void main() {
-            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
+            // gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
+            gl_FragColor = u_tint;
         }
         `;
 
