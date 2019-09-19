@@ -3,6 +3,7 @@ import { GLBuffer } from "./gl/glBuffer";
 import { Shader } from "./gl/shader";
 import { Sprite } from "./graphics/sprite";
 import { Matrix4x4 } from "./math/matrix4x4";
+import { Vector3 } from "./math/vector3";
 
 /**
  * The main game engine class
@@ -30,22 +31,13 @@ export class Engine {
         this.loadShaders();
         this._shader.use();
 
-        // load
-        this._projection = Matrix4x4.orthographic(
-            -this._canvas.width / 2,
-            this._canvas.width / 2,
-            -this._canvas.height / 2,
-            this._canvas.height / 2,
-            -1.0,
-            100.0,
-        );
-
         // load sprite
         this._sprite = new Sprite("test");
         this._sprite.load();
+        this._sprite.position = new Vector3(100, 30, 0);
 
         this.resize();
-        this.loop();
+        this.loop(0);
     }
 
     /**
@@ -65,11 +57,13 @@ export class Engine {
             └───────┴───────┘
                    -1
             */
-            gl.viewport(0, 0, 1, 1);
+            // canvas size change, so the projection matrix and the viewport should be update
+            this._projection = Matrix4x4.orthographic(0, this._canvas.width, this._canvas.height, 0, -1.0, 100.0);
+            gl.viewport(0, 0, this._canvas.width, this._canvas.height);
         }
     }
 
-    private loop() {
+    private loop(time: number) {
         /**
          * GLbitfield https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
          * https://stackoverflow.com/questions/55507383/confusion-about-the-variable-of-gl-color-buffer-bit
@@ -86,9 +80,10 @@ export class Engine {
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
 
-        // const modelLocation = this._shader.getUniformLocation("u_model");
-        // gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this._sprite.position).data));
+        const modelLocation = this._shader.getUniformLocation("u_model");
+        gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this._sprite.position).data));
 
+        this._sprite.update(time);
         this._sprite.draw();
 
         // console.log(`loop`);
@@ -101,11 +96,11 @@ export class Engine {
         attribute vec3 a_position;
 
         uniform mat4 u_projection;
-        // uniform mat4 u_model;
+        uniform mat4 u_model;
 
         void main() {
-            // gl_Position = u_projection * u_model * vec4(a_position, 1.0);
-            gl_Position = u_projection * vec4(a_position, 1.0);
+            gl_Position = u_projection * u_model * vec4(a_position, 1.0);
+            // gl_Position = u_projection * vec4(a_position, 1.0);
         }
         `;
 

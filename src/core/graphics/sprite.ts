@@ -6,8 +6,8 @@ export class Sprite {
 
     public constructor(
         private _name: string,
-        private _width: number = 10,
-        private _height: number = 10,
+        private _width: number = 200,
+        private _height: number = 160,
         private _position: Vector3 = Vector3.ZERO,
     ) {}
 
@@ -29,9 +29,9 @@ export class Sprite {
         // prettier-ignore
         const vertexs = [0, 0, 0,
                          0, this._height, 0,
-                         this._height, this._width, 0,
+                         this._width, this._height, 0,
 
-                         this._height, this._width, 0,
+                         this._width, this._height, 0,
                          this._width, 0, 0,
                          0, 0, 0];
 
