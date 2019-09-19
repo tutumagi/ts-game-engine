@@ -59,6 +59,12 @@ export class Engine {
             */
             // canvas size change, so the projection matrix and the viewport should be update
             this._projection = Matrix4x4.orthographic(0, this._canvas.width, this._canvas.height, 0, -1.0, 100.0);
+
+            /**
+             * gl.viewport告诉WebGL如何将裁剪空间（-1 到 +1）中的点转换到像素空间， 也就是画布内。
+             * 当你第一次创建WebGL上下文的时候WebGL会设置视域大小和画布大小匹配，
+             * 但是在那之后就需要你自己设置。当你改变画布大小就需要告诉WebGL新的视域设置。
+             */
             gl.viewport(0, 0, this._canvas.width, this._canvas.height);
         }
     }

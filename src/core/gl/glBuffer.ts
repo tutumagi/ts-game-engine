@@ -92,10 +92,10 @@ export class GLBuffer {
                 //                         // 0 = 使用当前的单位个数和单位长度 （ 3 * Float32Array.BYTES_PER_ELEMENT ）
                 gl.vertexAttribPointer(
                     it.location, //
-                    it.size,
-                    this._dataType, //
+                    it.size, // 告诉WebGL 每次从缓冲区获取数据时 获取`it.size`的个数 给顶点复制，如果是x,y,z 也就是3个，webgl会默认给 w复制为1
+                    this._dataType, // 缓冲区的数据类型
                     normalized,
-                    this._stride, // 从缓冲的
+                    this._stride, // 如果所有的数据都存在一个缓冲区内，则这个值位0，否则在多个缓冲区的话，需要根据情况赋值不同的值
                     it.offset * this._typeSize,
                 );
                 gl.enableVertexAttribArray(it.location);
