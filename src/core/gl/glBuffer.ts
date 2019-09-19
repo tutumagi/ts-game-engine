@@ -90,6 +90,7 @@ export class GLBuffer {
                 // var offset = 0;         // 从缓冲起始位置开始获取
                 // var stride = 0;         // 到下一个数据跳多少位内存
                 //                         // 0 = 使用当前的单位个数和单位长度 （ 3 * Float32Array.BYTES_PER_ELEMENT ）
+                // 从缓冲区中 读取数据赋值 给对应shader中 对应location的属性值
                 gl.vertexAttribPointer(
                     it.location, //
                     it.size, // 告诉WebGL 每次从缓冲区获取数据时 获取`it.size`的个数 给顶点复制，如果是x,y,z 也就是3个，webgl会默认给 w复制为1

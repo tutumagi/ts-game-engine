@@ -1,7 +1,7 @@
-export class Vector3 {
-    constructor(private _x: number, private _y: number, private _z: number) {}
+export class Vector2 {
+    constructor(private _x: number, private _y: number) {}
 
-    public static ZERO = new Vector3(0, 0, 0);
+    public static ZERO = new Vector2(0, 0);
 
     public get x(): number {
         return this._x;
@@ -19,16 +19,8 @@ export class Vector3 {
         this._y = value;
     }
 
-    public get z(): number {
-        return this._z;
-    }
-
-    public set z(value: number) {
-        this._z = value;
-    }
-
     public toArray(): number[] {
-        return [this._x, this._y, this._z];
+        return [this._x, this._y];
     }
 
     public toFloat32Array() {

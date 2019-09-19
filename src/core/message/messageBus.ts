@@ -51,7 +51,7 @@ export class MessageBus {
         });
     }
 
-    public update(delta: number) {
+    public static update(delta: number) {
         const messageLimit = Math.min(MessageBus._normalQueueMessagePerUpdate, MessageBus._normalMessageQueue.length);
         if (messageLimit <= 0) {
             return;

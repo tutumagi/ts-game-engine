@@ -1,9 +1,10 @@
+import { AssetManager } from "./assets/assetManager";
 import { gl, GLUtilities } from "./gl/gl";
-import { GLBuffer } from "./gl/glBuffer";
 import { Shader } from "./gl/shader";
 import { Sprite } from "./graphics/sprite";
 import { Matrix4x4 } from "./math/matrix4x4";
 import { Vector3 } from "./math/vector3";
+import { MessageBus } from "./message/messageBus";
 
 /**
  * The main game engine class
@@ -24,6 +25,8 @@ export class Engine {
      * Engine Start
      */
     public start() {
+        AssetManager.initialize();
+
         this._canvas = GLUtilities.initialize();
 
         gl.clearColor(0, 0, 0, 1);
@@ -32,7 +35,7 @@ export class Engine {
         this._shader.use();
 
         // load sprite
-        this._sprite = new Sprite("test");
+        this._sprite = new Sprite("test", "dist/assets/textures/rose.jpg");
         this._sprite.load();
         this._sprite.position = new Vector3(100, 30, 0);
 
@@ -70,6 +73,8 @@ export class Engine {
     }
 
     private loop(time: number) {
+        MessageBus.update(time);
+
         /**
          * GLbitfield https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
          * https://stackoverflow.com/questions/55507383/confusion-about-the-variable-of-gl-color-buffer-bit
@@ -79,9 +84,9 @@ export class Engine {
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         // set uniform
-        const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_color");
+        const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_tint");
         // set uniform var the special value
-        gl.uniform4f(colorPosition, 1, 1, 0, 1);
+        gl.uniform4f(colorPosition, 1, 1, 1, 1);
 
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
@@ -90,7 +95,7 @@ export class Engine {
         gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this._sprite.position).data));
 
         this._sprite.update(time);
-        this._sprite.draw();
+        this._sprite.draw(this._shader);
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));
@@ -112,6 +117,8 @@ export class Engine {
         uniform mat4 u_projection;
         uniform mat4 u_model;
 
+        varying vec2 v_texCoord;
+
         void main() {
             gl_Position = u_projection * u_model * vec4(a_position, 1.0);
             // gl_Position = u_projection * vec4(a_position, 1.0);
@@ -121,10 +128,14 @@ export class Engine {
         const fragmentShaderSource = `
         // mediump 表示 medium precision 中等精度
         precision mediump float;
-        uniform vec4 u_color;
+
+        uniform vec4 u_tint;
+        uniform sampler2D u_diffuse;
+
+        varying vec2 v_texCoord;
 
         void main() {
-            gl_FragColor = u_color;
+            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
         }
         `;
 
