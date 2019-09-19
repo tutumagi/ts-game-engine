@@ -58,16 +58,16 @@ export class Sprite {
 
         const vertexs = [
             // xyz
-            0, 0, 0,
-            0, this._height, 0,
-            this._width, this._height, 0,
+            0, 0, 0,                            0, 0,
+            0, this._height, 0,                 0, 1,
+            this._width, this._height, 0,       1, 1,
 
-            this._width, this._height, 0,
-            this._width, 0, 0,
-            0, 0, 0,
+            this._width, this._height, 0,       1, 1,
+            this._width, 0, 0,                  1, 0,
+            0, 0, 0,                            0, 0,
         ];
 
-        this._buffer = new GLBuffer(3);
+        this._buffer = new GLBuffer(5);
 
         const positionAttribute: AttributeInfo = {
             location: 0,
@@ -86,7 +86,7 @@ export class Sprite {
         // the postion localtion is zero in every shader, so we hard code the loacation here
         // const positionLocation = 0;
         this._buffer.addAttributeLocation(positionAttribute);
-        // this._buffer.addAttributeLocation(texCoordAttribute);
+        this._buffer.addAttributeLocation(texCoordAttribute);
         this._buffer.upload();
         this._buffer.unbind();
     }
@@ -98,9 +98,13 @@ export class Sprite {
         // if (this._texture.isLoaded) {
         //     this.load();
         // }
-        // this._texture.activeAndBind(0);
-        // const diffuseLocation = shader.getUniformLocation("u_diffuse");
-        // gl.uniform1i(diffuseLocation, 0);
+        if (this._texture.isLoaded) {
+            const textureUnitIndex = 0;
+
+            this._texture.activeAndBind(textureUnitIndex);
+            const diffuseLocation = shader.getUniformLocation("u_diffuse");
+            gl.uniform1i(diffuseLocation, textureUnitIndex);
+        }
 
         if (this._buffer) {
             this._buffer.bind(false);

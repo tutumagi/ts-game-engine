@@ -86,7 +86,7 @@ export class Engine {
         // set uniform
         const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_tint");
         // set uniform var the special value
-        gl.uniform4f(colorPosition, 1, 0.5, 1, 1);
+        gl.uniform4f(colorPosition, 1, 1, 1, 1);
 
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
@@ -121,11 +121,11 @@ export class Engine {
         uniform mat4 u_projection;
         uniform mat4 u_model;
 
-        // varying vec2 v_texCoord;
+        varying vec2 v_texCoord;
 
         void main() {
             gl_Position = u_projection * u_model * vec4(a_position, 1.0);
-            // v_texCoord = a_texCoord;
+            v_texCoord = a_texCoord;
             // gl_Position = u_projection * vec4(a_position, 1.0);
         }
         `;
@@ -137,11 +137,11 @@ export class Engine {
         uniform vec4 u_tint;
         uniform sampler2D u_diffuse;
 
-        // varying vec2 v_texCoord;
+        varying vec2 v_texCoord;
 
         void main() {
-            // gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
-            gl_FragColor = u_tint;
+            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
+            // gl_FragColor = u_tint;
         }
         `;
 

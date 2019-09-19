@@ -23,7 +23,7 @@ export class Texture implements IMessageHandler {
 
         this._handle = gl.createTexture();
 
-        Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name, this);
+        // Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name, this);
 
         this.bind();
 
@@ -33,6 +33,8 @@ export class Texture implements IMessageHandler {
         const asset = AssetManager.getAsset(this._name);
         if (asset !== undefined) {
             this.loadTextureFromAsset(asset as ImageAsset);
+        } else {
+            Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name, this);
         }
     }
 

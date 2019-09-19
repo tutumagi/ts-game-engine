@@ -39,7 +39,7 @@ export class GLBuffer {
      * @param _elementSize the size of each element in this buffer
      * @param _dataType  the data type of this buffer. Default: gl.FLOAT
      * @param _targetBufferType this buffer target type. Default: gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER
-     * @param _mode the drawing of this buffer. Default: gl.
+     * @param _mode the drawing of this buffer. Default: gl.TRIANGLES
      */
     constructor(
         private _elementSize: number,
