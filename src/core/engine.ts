@@ -97,6 +97,14 @@ export class Engine {
     }
 
     private loadShaders() {
+        /**
+         * 在GLSL中为什么变量的前缀都是 a_, u_ 或 v_ ？
+         * 那只是一个命名约定，不是强制要求的。 但是对我来说可以轻松通过名字知道值从哪里来，
+         *  a_ 代表属性，值从缓冲中提供；
+         *  u_ 代表全局变量，直接对着色器设置；
+         *  v_ 代表可变量，是从顶点着色器的顶点中插值来出来的。
+         *  查看WebGL工作原理获取更多相关信息。
+         */
         // glsl
         const vertexShaderSource = `
         attribute vec3 a_position;
@@ -111,6 +119,7 @@ export class Engine {
         `;
 
         const fragmentShaderSource = `
+        // mediump 表示 medium precision 中等精度
         precision mediump float;
         uniform vec4 u_color;
 
