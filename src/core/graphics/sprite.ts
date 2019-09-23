@@ -106,9 +106,9 @@ export class Sprite {
         // }
 
         // set uniform
-        // const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");
-        // // set uniform var the special value
-        // gl.uniform4fv(colorPosition, this._material.tint.toFloatArray());
+        const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");
+        // set uniform var the special value
+        gl.uniform4fv(colorPosition, this._material.tint.toFloatArray());
 
         this._material.draw(shader);
 
