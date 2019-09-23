@@ -104,7 +104,7 @@ export class Texture implements IMessageHandler {
 
         this.bind();
 
-        // 将图像上传到纹理
+        // 将图像数据上传到纹理
         gl.texImage2D(gl.TEXTURE_2D, LEVEL, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, asset.data);
 
         if (this.isPowerOf2()) {
