@@ -81,7 +81,7 @@ export class Sprite {
 
         const texCoordAttribute: AttributeInfo = {
             location: 1,
-            offset: 3,
+            offset: 3, // fix the texCoord attribute offset uv顶点的起始位置在第三个（前面是xyz）
             size: 2,
         };
 
