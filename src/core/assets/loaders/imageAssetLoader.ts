@@ -22,7 +22,7 @@ export class ImageAsset implements IAsset {
 
 export class ImageAssetLoader implements IAssetLoader {
     public get supportedExtensions(): string[] {
-        return ["png", "gif", "jpg"];
+        return ["png", "gif", "jpg", "jpeg"];
     }
 
     // @ts-ignore

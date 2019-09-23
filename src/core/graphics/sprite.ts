@@ -2,26 +2,30 @@ import { gl } from "../gl/gl";
 import { AttributeInfo, GLBuffer } from "../gl/glBuffer";
 import { Shader } from "../gl/shader";
 import { Vector3 } from "../math/vector3";
+import { Color } from "./color";
+import { Material } from "./material";
+import { MaterialManager } from "./materialManager";
 import { Texture } from "./texture";
 import { TextureManager } from "./textureManager";
 
 export class Sprite {
     private _buffer: GLBuffer;
-    private _texture: Texture;
+    private _material: Material;
 
     public constructor(
         private _name: string,
         textureName: string,
+        private _tint: Color,
         private _width: number = 200,
         private _height: number = 160,
         private _position: Vector3 = Vector3.ZERO,
     ) {
-        this._texture = TextureManager.getTexture(textureName);
+        this._material = MaterialManager.getMaterial(_name, textureName, _tint);
     }
 
     public destroy() {
         this._buffer.destroy();
-        TextureManager.releaseTexture(this._texture.name);
+        MaterialManager.releaseMaterial(this._name);
     }
 
     public get name(): string {
@@ -98,13 +102,13 @@ export class Sprite {
         // if (this._texture.isLoaded) {
         //     this.load();
         // }
-        if (this._texture.isLoaded) {
-            const textureUnitIndex = 0;
 
-            this._texture.activeAndBind(textureUnitIndex);
-            const diffuseLocation = shader.getUniformLocation("u_diffuse");
-            gl.uniform1i(diffuseLocation, textureUnitIndex);
-        }
+        // set uniform
+        // const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");
+        // // set uniform var the special value
+        // gl.uniform4fv(colorPosition, this._material.tint.toFloatArray());
+
+        this._material.draw(shader);
 
         if (this._buffer) {
             this._buffer.bind(false);

@@ -1,6 +1,7 @@
 import { AssetManager } from "./assets/assetManager";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
+import { Color } from "./graphics/color";
 import { Sprite } from "./graphics/sprite";
 import { Matrix4x4 } from "./math/matrix4x4";
 import { Vector3 } from "./math/vector3";
@@ -35,7 +36,7 @@ export class Engine {
         this._shader.use();
 
         // load sprite
-        this._sprite = new Sprite("test", "dist/assets/textures/rose.jpg");
+        this._sprite = new Sprite("test", "dist/assets/textures/sloth.jpeg", Color.white);
         this._sprite.load();
         this._sprite.position = new Vector3(100, 30, 0);
 
@@ -82,11 +83,6 @@ export class Engine {
          * gl.clear tell the device what kind should be cleared if you do something use `clearxxx`
          */
         gl.clear(gl.COLOR_BUFFER_BIT);
-
-        // set uniform
-        const colorPosition: WebGLUniformLocation = this._shader.getUniformLocation("u_tint");
-        // set uniform var the special value
-        gl.uniform4f(colorPosition, 1, 1, 1, 1);
 
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
@@ -135,12 +131,14 @@ export class Engine {
         precision mediump float;
 
         uniform vec4 u_tint;
+        // 纹理
         uniform sampler2D u_diffuse;
-
+        // 从顶点着色器传入的纹理坐标
         varying vec2 v_texCoord;
 
         void main() {
-            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
+            // 在纹理上寻找对应的颜色值
+            gl_FragColor =  texture2D(u_diffuse, v_texCoord);
             // gl_FragColor = u_tint;
         }
         `;

@@ -16,6 +16,12 @@ export class Texture implements IMessageHandler {
     private _width: number;
     private _height: number;
 
+    /**
+     * create a new Texture
+     * @param name the path of the texture
+     * @param width texture width
+     * @param height texture height
+     */
     public constructor(name: string, width: number = 1, height: number = 1) {
         this._name = name;
         this._width = width;
@@ -42,6 +48,9 @@ export class Texture implements IMessageHandler {
         gl.deleteTexture(this._handle);
     }
 
+    /**
+     * return the texture's name (texture's path)
+     */
     public get name(): string {
         return this._name;
     }
