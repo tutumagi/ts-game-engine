@@ -27,6 +27,7 @@ export class Texture implements IMessageHandler {
         this._width = width;
         this._height = height;
 
+        // 创建纹理
         this._handle = gl.createTexture();
 
         // Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name, this);
@@ -34,7 +35,7 @@ export class Texture implements IMessageHandler {
         this.bind();
 
         // 将图像上传到纹理
-        gl.texImage2D(gl.TEXTURE_2D, LEVEL, gl.RGBA, 1, 1, BORDER, gl.RGBA, gl.UNSIGNED_BYTE, TEMP_IMAGE_DATA);
+        // gl.texImage2D(gl.TEXTURE_2D, LEVEL, gl.RGBA, 1, 1, BORDER, gl.RGBA, gl.UNSIGNED_BYTE, TEMP_IMAGE_DATA);
 
         const asset = AssetManager.getAsset(this._name);
         if (asset !== undefined) {

@@ -23,6 +23,10 @@ export class Material {
         return this._tint;
     }
 
+    public get name(): string {
+        return this._name;
+    }
+
     public draw(shader: Shader) {
         if (this._diffuseTexture.isLoaded) {
             const textureUnitIndex = 0;

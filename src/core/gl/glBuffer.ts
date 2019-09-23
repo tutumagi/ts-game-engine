@@ -26,12 +26,15 @@ export interface AttributeInfo {
 export class GLBuffer {
     private _hasAttributeLocation: boolean = false;
 
+    /** 0 = move forward size * sizeof(type) each iteration to get the next position */
     private _stride: number;
     private _buffer: WebGLBuffer;
 
+    /** the element's type size in the buffer */
     private _typeSize: number;
-
+    /** the orginal data */
     private _data: number[] = [];
+    /** the attribute info */
     private _attributes: AttributeInfo[] = [];
 
     /**

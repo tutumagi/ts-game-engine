@@ -47,6 +47,10 @@ export class Shader {
         gl.useProgram(this._program);
     }
 
+    /**
+     * get attribute location by name
+     * @param name the attribute name
+     */
     public getAttributeLocation(name: string): number {
         if (this._attributes[name] === undefined) {
             throw new Error(`Unable to find attribute named ${name} in shader named ${this._name}`);
@@ -54,6 +58,10 @@ export class Shader {
         return this._attributes[name];
     }
 
+    /**
+     * get uniform location by name
+     * @param name the uniform name
+     */
     public getUniformLocation(name: string): WebGLUniformLocation {
         if (this._uniforms[name] === undefined) {
             throw new Error(`Unable to find uniform named ${name} in shader named ${this._name}`);
@@ -61,6 +69,12 @@ export class Shader {
         return this._uniforms[name];
     }
 
+    /**
+     * load shader
+     * loader -> compile
+     * @param source the shader source( glsl )
+     * @param shaderType shaderType( vetexShader or fragmentShader)
+     */
     private loadShader(source: string, shaderType: number): WebGLShader {
         const shader: WebGLShader = gl.createShader(shaderType);
         // load shader program
@@ -78,6 +92,11 @@ export class Shader {
         return shader;
     }
 
+    /**
+     * create shader program
+     * @param vertexShader the vertex shader
+     * @param fragmentShader the fragment shader
+     */
     private createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader) {
         // create
         this._program = gl.createProgram();
@@ -94,6 +113,10 @@ export class Shader {
             throw new Error(`Error create shader program ${this.name} : ${error}`);
         }
     }
+
+    /**
+     * get all active attributes and store them by the name -> location
+     */
     private detectAttributes() {
         // return all attributes in the shader
         const attributeCount = gl.getProgramParameter(this._program, gl.ACTIVE_ATTRIBUTES);
@@ -107,6 +130,9 @@ export class Shader {
         }
     }
 
+    /**
+     * get all active uniform and store them by the name -> location
+     */
     private detectUniforms() {
         const uniformCount = gl.getProgramParameter(this._program, gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; ++i) {
@@ -128,6 +154,4 @@ export class Shader {
  * Attributes 属性 (从缓冲中获取的数据)
  * Uniforms 全局变量 (在一次绘制中对所有顶点保持一致值)
  * Textures 纹理 (从像素或纹理元素中获取的数据)
- *
- *
  */

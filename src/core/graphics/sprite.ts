@@ -81,7 +81,7 @@ export class Sprite {
 
         const texCoordAttribute: AttributeInfo = {
             location: 1,
-            offset: 0,
+            offset: 3,
             size: 2,
         };
 
