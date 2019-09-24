@@ -2,6 +2,7 @@ import { TestZone } from "../game/testZone";
 import { AssetManager } from "./assets/assetManager";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
+import { loadShaders } from "./gl/shader/baseShaders";
 import { Matrix4x4 } from "./math/matrix4x4";
 import { MessageBus } from "./message/messageBus";
 import { ZoneManager } from "./world/zoneManager";
@@ -29,7 +30,7 @@ export class Engine {
 
         gl.clearColor(0, 0, 0, 1);
 
-        this.loadShaders();
+        this._shader = loadShaders();
         this._shader.use();
 
         ZoneManager.changeZoneByZone(new TestZone());
@@ -86,53 +87,5 @@ export class Engine {
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));
-    }
-
-    private loadShaders() {
-        // https://stackoverflow.com/questions/17537879/in-webgl-what-are-the-differences-between-an-attribute-a-uniform-and-a-varying
-        // attribute vs uniform vs varying
-        /**
-         * 在GLSL中为什么变量的前缀都是 a_, u_ 或 v_ ？
-         * 那只是一个命名约定，不是强制要求的。 但是对我来说可以轻松通过名字知道值从哪里来，
-         *  a_ 代表属性，值从缓冲中提供；
-         *  u_ 代表全局变量，直接对着色器设置；
-         *  v_ 代表可变量，是从顶点着色器的顶点中插值来出来的。
-         *  查看WebGL工作原理获取更多相关信息。
-         */
-        // glsl
-        const vertexShaderSource = `
-        attribute vec3 a_position;
-        attribute vec2 a_texCoord;
-
-        uniform mat4 u_projection;
-        uniform mat4 u_model;
-
-        varying vec2 v_texCoord;
-
-        void main() {
-            gl_Position = u_projection * u_model * vec4(a_position, 1.0);
-            v_texCoord = a_texCoord;
-            // gl_Position = u_projection * vec4(a_position, 1.0);
-        }
-        `;
-
-        const fragmentShaderSource = `
-        // mediump 表示 medium precision 中等精度
-        precision mediump float;
-
-        uniform vec4 u_tint;
-        // 纹理
-        uniform sampler2D u_diffuse;
-        // 从顶点着色器传入的纹理坐标
-        varying vec2 v_texCoord;
-
-        void main() {
-            // 在纹理上寻找对应的颜色值
-            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord).rbga;
-            // gl_FragColor = u_tint;
-        }
-        `;
-
-        this._shader = new Shader("basic", vertexShaderSource, fragmentShaderSource);
     }
 }

@@ -36,6 +36,8 @@ export class GLBuffer {
     private _data: number[] = [];
     /** the attribute info */
     private _attributes: AttributeInfo[] = [];
+    /** the element size in buffer. e.g. a texture vertex data contains x,y,z,u,v , so the elementsize is 5 */
+    private _elementSize: number = 0;
 
     /**
      * Create a new GL Buffer
@@ -45,7 +47,6 @@ export class GLBuffer {
      * @param _mode the drawing of this buffer. Default: gl.TRIANGLES
      */
     constructor(
-        private _elementSize: number,
         private _dataType: number = gl.FLOAT,
         private _targetBufferType: number = gl.ARRAY_BUFFER,
         private _mode: number = gl.TRIANGLES,
@@ -123,6 +124,11 @@ export class GLBuffer {
      */
     public addAttributeLocation(info: AttributeInfo) {
         this._hasAttributeLocation = true;
+
+        info.offset = this._elementSize;
+        this._elementSize += info.size;
+
+        this._stride = this._elementSize * this._typeSize;
         this._attributes.push(info);
     }
 

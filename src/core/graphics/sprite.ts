@@ -61,7 +61,7 @@ export class Sprite {
             0, 0, 0,                            0, 0,
         ];
 
-        this._buffer = new GLBuffer(5);
+        this._buffer = new GLBuffer();
 
         // 顶点属性的 相关信息
         const positionAttribute: AttributeInfo = {
@@ -73,7 +73,7 @@ export class Sprite {
         // 纹理uv属性的 相关信息
         const texCoordAttribute: AttributeInfo = {
             location: 1,
-            offset: 3, // fix the texCoord attribute offset uv顶点的起始位置在第三个（前面是xyz）
+            offset: 0, // fix the texCoord attribute offset uv顶点的起始位置在第三个（前面是xyz）
             size: 2,
         };
 
