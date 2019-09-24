@@ -1,6 +1,7 @@
 import { gl } from "../gl/gl";
 import { AttributeInfo, GLBuffer } from "../gl/glBuffer";
 import { Shader } from "../gl/shader";
+import { Matrix4x4 } from "../math/matrix4x4";
 import { Vector3 } from "../math/vector3";
 import { Color } from "./color";
 import { Material } from "./material";
@@ -104,6 +105,9 @@ export class Sprite {
         // if (this._texture.isLoaded) {
         //     this.load();
         // }
+
+        const modelLocation = shader.getUniformLocation("u_model");
+        gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this.position).data));
 
         // set uniform
         const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");

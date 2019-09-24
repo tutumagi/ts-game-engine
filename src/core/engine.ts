@@ -1,4 +1,5 @@
 import { AssetManager } from "./assets/assetManager";
+import { SpriteComponent } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
 import { Color } from "./graphics/color";
@@ -6,6 +7,8 @@ import { Sprite } from "./graphics/sprite";
 import { Matrix4x4 } from "./math/matrix4x4";
 import { Vector3 } from "./math/vector3";
 import { MessageBus } from "./message/messageBus";
+import { SimObject } from "./world/simObject";
+import { ZoneManager } from "./world/zoneManager";
 
 /**
  * The main game engine class
@@ -15,7 +18,7 @@ export class Engine {
     private _shader: Shader;
     private _projection: Matrix4x4;
 
-    private _sprite: Sprite;
+    // private _sprite: Sprite;
 
     /**
      * Create a new Engine
@@ -35,10 +38,13 @@ export class Engine {
         this.loadShaders();
         this._shader.use();
 
-        // load sprite
-        this._sprite = new Sprite("test", "dist/assets/textures/sloth.jpeg", Color.white);
-        this._sprite.load();
-        this._sprite.position = new Vector3(100, 30, 0);
+        const zoneId = ZoneManager.createZone("main", "the main zone");
+
+        const spriteObject = new SimObject(1, "sprite");
+        spriteObject.addComponent(new SpriteComponent("sprite", "dist/assets/textures/sloth.jpeg"));
+        ZoneManager.getZoneById(zoneId).scene.addObject(spriteObject);
+
+        ZoneManager.changeZone(zoneId);
 
         this.resize();
         this.loop(0);
@@ -73,8 +79,8 @@ export class Engine {
         }
     }
 
-    private loop(time: number) {
-        MessageBus.update(time);
+    private loop(delta: number) {
+        MessageBus.update(delta);
 
         /**
          * GLbitfield https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
@@ -87,12 +93,8 @@ export class Engine {
         const projectionPosition = this._shader.getUniformLocation("u_projection");
         gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection.data));
 
-        const modelLocation = this._shader.getUniformLocation("u_model");
-        gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this._sprite.position).data));
-
-        this._sprite.update(time);
-
-        this._sprite.draw(this._shader);
+        ZoneManager.update(delta);
+        ZoneManager.render(this._shader);
 
         // console.log(`loop`);
         requestAnimationFrame(this.loop.bind(this));

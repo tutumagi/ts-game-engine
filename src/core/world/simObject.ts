@@ -1,3 +1,4 @@
+import { BaseComponent } from "../components/BaseComponent";
 import { Shader } from "../gl/shader";
 import { Matrix4x4 } from "../math/matrix4x4";
 import { Transform } from "../math/transform";
@@ -12,6 +13,8 @@ export class SimObject {
 
     private _localMatrix: Matrix4x4 = Matrix4x4.identity();
     private _worldMatrix: Matrix4x4 = Matrix4x4.identity();
+
+    private _components: { [name: string]: BaseComponent } = {};
 
     public name: string;
 
@@ -69,11 +72,20 @@ export class SimObject {
         return null;
     }
 
+    public addComponent(component: BaseComponent) {
+        component.setOwner(this);
+        this._components[component.name] = component;
+    }
+
     public load() {
         if (this._isLoaded) {
             return;
         }
         this._isLoaded = true;
+
+        Object.values(this._components).forEach((c) => {
+            c.load();
+        });
         this._children.forEach((c) => {
             c.load();
         });
@@ -81,18 +93,28 @@ export class SimObject {
 
     public unload() {
         this._isLoaded = false;
+
+        Object.values(this._components).forEach((c) => {
+            c.unload();
+        });
         this._children.forEach((c) => {
             c.unload();
         });
     }
 
     public update(delta: number) {
+        Object.values(this._components).forEach((c) => {
+            c.update(delta);
+        });
         this._children.forEach((c) => {
             c.update(delta);
         });
     }
 
     public render(shader: Shader) {
+        Object.values(this._components).forEach((c) => {
+            c.render(shader);
+        });
         this._children.forEach((c) => {
             c.render(shader);
         });

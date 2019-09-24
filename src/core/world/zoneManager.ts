@@ -29,7 +29,11 @@ export class ZoneManager {
         }
     }
 
-    public update(delta: number) {
+    public static getZoneById(id: number): Zone | undefined {
+        return ZoneManager._zones[id];
+    }
+
+    public static update(delta: number) {
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.update(delta);
         }

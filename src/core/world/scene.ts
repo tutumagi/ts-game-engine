@@ -55,6 +55,15 @@ export class Scene {
  *          - Scene
  *          - Components
  *
+ *  Component
+ *          - Name
+ *          - SimObject
+ *          - Update / render
+ *
+ *  SpriteComponent
+ *          - Sprite
+ *
+ *
  *  Zone ( level )
  *          - Id
  *          - Name
