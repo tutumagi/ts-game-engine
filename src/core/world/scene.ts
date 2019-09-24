@@ -59,4 +59,10 @@ export class Scene {
  *
  *  ZoneManager
  *
+ *
+ *
+ *  Zone States
+ *  uninitialized
+ *  loading
+ *  updating
  */

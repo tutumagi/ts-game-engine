@@ -1,6 +1,6 @@
-import { Transform } from "stream";
 import { Shader } from "../gl/shader";
 import { Matrix4x4 } from "../math/matrix4x4";
+import { Transform } from "../math/transform";
 import { Scene } from "./scene";
 
 export class SimObject {
