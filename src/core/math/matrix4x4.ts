@@ -88,7 +88,7 @@ export class Matrix4x4 {
     public static rotationY(angleInRadians: number): Matrix4x4 {
         const m = new Matrix4x4();
         const c = Math.cos(angleInRadians);
-        const s = Math.sign(angleInRadians);
+        const s = Math.sin(angleInRadians);
 
         m._data[0] = c;
         m._data[2] = -s;
@@ -101,20 +101,20 @@ export class Matrix4x4 {
     public static rotationZ(angleInRadians: number): Matrix4x4 {
         const m = new Matrix4x4();
         const c = Math.cos(angleInRadians);
-        const s = Math.sign(angleInRadians);
+        const s = Math.sin(angleInRadians);
 
         m._data[0] = c;
         m._data[1] = s;
         m._data[4] = -s;
         m._data[5] = c;
 
-        return;
+        return m;
     }
 
     public static rotationXYZ(x: number, y: number, z: number): Matrix4x4 {
         const rx = Matrix4x4.rotationX(x);
-        const ry = Matrix4x4.rotationX(y);
-        const rz = Matrix4x4.rotationX(z);
+        const ry = Matrix4x4.rotationY(y);
+        const rz = Matrix4x4.rotationZ(z);
 
         /**
          * `Z x Y x X`

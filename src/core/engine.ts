@@ -1,3 +1,4 @@
+import { TestZone } from "../game/testZone";
 import { AssetManager } from "./assets/assetManager";
 import { SpriteComponent } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
@@ -36,16 +37,7 @@ export class Engine {
         this.loadShaders();
         this._shader.use();
 
-        const zoneId = ZoneManager.createZone("main", "the main zone");
-
-        const spriteObject = new SimObject(1, "sprite");
-        spriteObject.transform.position.x = 600;
-        spriteObject.transform.position.y = 600;
-
-        spriteObject.addComponent(new SpriteComponent("sprite", "dist/assets/textures/sloth.jpeg"));
-        ZoneManager.getZoneById(zoneId).scene.addObject(spriteObject);
-
-        ZoneManager.changeZone(zoneId);
+        ZoneManager.changeZoneByZone(new TestZone());
 
         this.resize();
         this.loop(0);

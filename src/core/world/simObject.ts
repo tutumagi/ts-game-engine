@@ -78,6 +78,18 @@ export class SimObject {
         this._components[component.name] = component;
     }
 
+    public getComponent<T extends BaseComponent>(cls: typeof BaseComponent): T | undefined {
+        let ret: T;
+        Object.values(this._components).some((v) => {
+            if (v instanceof cls) {
+                ret = v as T;
+                return true;
+            }
+        });
+
+        return ret;
+    }
+
     public load() {
         if (this._isLoaded) {
             return;
