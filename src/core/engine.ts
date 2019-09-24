@@ -1,14 +1,9 @@
 import { TestZone } from "../game/testZone";
 import { AssetManager } from "./assets/assetManager";
-import { SpriteComponent } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
-import { Color } from "./graphics/color";
-import { Sprite } from "./graphics/sprite";
 import { Matrix4x4 } from "./math/matrix4x4";
-import { Vector3 } from "./math/vector3";
 import { MessageBus } from "./message/messageBus";
-import { SimObject } from "./world/simObject";
 import { ZoneManager } from "./world/zoneManager";
 
 /**
