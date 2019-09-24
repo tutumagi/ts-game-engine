@@ -10,7 +10,7 @@ export class SpriteComponent extends BaseComponent {
     public constructor(name: string, materialName: string) {
         super();
         // "dist/assets/textures/sloth.jpeg"
-        this._sprite = new Sprite(name, materialName, Color.white);
+        this._sprite = new Sprite(name, materialName, Color.white, 200, 200);
     }
 
     public load() {

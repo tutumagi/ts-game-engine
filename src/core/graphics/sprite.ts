@@ -15,9 +15,8 @@ export class Sprite {
         private _name: string,
         textureName: string,
         private _tint: Color,
-        private _width: number = 200,
-        private _height: number = 160,
-        private _position: Vector3 = Vector3.ZERO,
+        private _width: number = 1,
+        private _height: number = 1,
     ) {
         this._material = MaterialManager.getMaterial(_name, textureName, _tint);
     }
@@ -29,14 +28,6 @@ export class Sprite {
 
     public get name(): string {
         return this._name;
-    }
-
-    public get position(): Vector3 {
-        return this._position;
-    }
-
-    public set position(value: Vector3) {
-        this._position = value;
     }
 
     public load() {
