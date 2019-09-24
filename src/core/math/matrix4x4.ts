@@ -191,4 +191,10 @@ export class Matrix4x4 {
     public toFloat32Array(): Float32Array {
         return new Float32Array(this._data);
     }
+
+    public copyFrom(m: Matrix4x4) {
+        this._data.forEach((_, i) => {
+            this._data[i] = m.data[i];
+        });
+    }
 }

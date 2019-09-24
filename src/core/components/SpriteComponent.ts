@@ -16,7 +16,6 @@ export class SpriteComponent extends BaseComponent {
     public load() {
         // load sprite
         this._sprite.load();
-        this._sprite.position = new Vector3(100, 30, 0);
     }
 
     public unload(): void {}
@@ -25,6 +24,6 @@ export class SpriteComponent extends BaseComponent {
         this._sprite.update(delta);
     }
     public render(shader: Shader): void {
-        this._sprite.draw(shader);
+        this._sprite.draw(shader, this.owner.worldMatrix);
     }
 }

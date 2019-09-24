@@ -2,11 +2,11 @@ import { Matrix4x4 } from "./matrix4x4";
 import { Vector3 } from "./vector3";
 
 export class Transform {
-    public position: Vector3 = Vector3.ZERO;
+    public position: Vector3 = Vector3.ZERO.copy();
 
-    public rotation: Vector3 = Vector3.ZERO;
+    public rotation: Vector3 = Vector3.ZERO.copy();
 
-    public scale: Vector3 = Vector3.ZERO;
+    public scale: Vector3 = Vector3.IDENTIFY.copy();
 
     constructor() {}
 

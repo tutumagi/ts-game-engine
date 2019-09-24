@@ -18,8 +18,6 @@ export class Engine {
     private _shader: Shader;
     private _projection: Matrix4x4;
 
-    // private _sprite: Sprite;
-
     /**
      * Create a new Engine
      */
@@ -41,6 +39,9 @@ export class Engine {
         const zoneId = ZoneManager.createZone("main", "the main zone");
 
         const spriteObject = new SimObject(1, "sprite");
+        spriteObject.transform.position.x = 600;
+        spriteObject.transform.position.y = 600;
+
         spriteObject.addComponent(new SpriteComponent("sprite", "dist/assets/textures/sloth.jpeg"));
         ZoneManager.getZoneById(zoneId).scene.addObject(spriteObject);
 

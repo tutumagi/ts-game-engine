@@ -2,6 +2,7 @@ export class Vector3 {
     constructor(private _x: number, private _y: number, private _z: number) {}
 
     public static ZERO = new Vector3(0, 0, 0);
+    public static IDENTIFY = new Vector3(1, 1, 1);
 
     public get x(): number {
         return this._x;
@@ -39,5 +40,9 @@ export class Vector3 {
         this._x = other.x;
         this._y = other.y;
         this._z = other.z;
+    }
+
+    public copy(): Vector3 {
+        return new Vector3(this._x, this._y, this._z);
     }
 }

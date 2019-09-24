@@ -12,6 +12,7 @@ export class SimObject {
     private _scene?: Scene;
 
     private _localMatrix: Matrix4x4 = Matrix4x4.identity();
+    // depence this._parent
     private _worldMatrix: Matrix4x4 = Matrix4x4.identity();
 
     private _components: { [name: string]: BaseComponent } = {};
@@ -53,23 +54,23 @@ export class SimObject {
     public removeChild(child: SimObject) {
         const index = this._children.indexOf(child);
         if (index !== -1) {
-            child._parent = null;
+            child._parent = undefined;
             this._children.splice(index, 1);
         }
     }
 
-    public getObjectByName(name: string): SimObject | null {
+    public getObjectByName(name: string): SimObject | undefined {
         if (this.name === name) {
             return this;
         }
         for (const child of this._children) {
             const result = child.getObjectByName(name);
-            if (result !== null) {
+            if (result !== undefined) {
                 return result;
             }
         }
 
-        return null;
+        return undefined;
     }
 
     public addComponent(component: BaseComponent) {
@@ -103,6 +104,9 @@ export class SimObject {
     }
 
     public update(delta: number) {
+        this._localMatrix = this.transform.getTransformMatrix();
+        this.updateWorldMatrix(this._parent !== undefined ? this._parent._worldMatrix : undefined);
+
         Object.values(this._components).forEach((c) => {
             c.update(delta);
         });
@@ -122,5 +126,13 @@ export class SimObject {
 
     protected onAdded(scene: Scene) {
         this._scene = scene;
+    }
+
+    private updateWorldMatrix(parentWorldMatrix: Matrix4x4) {
+        if (parentWorldMatrix !== undefined) {
+            this._worldMatrix = Matrix4x4.multiply(parentWorldMatrix, this._localMatrix);
+        } else {
+            this._worldMatrix.copyFrom(this._localMatrix);
+        }
     }
 }

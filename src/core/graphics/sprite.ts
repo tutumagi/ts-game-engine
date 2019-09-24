@@ -6,8 +6,6 @@ import { Vector3 } from "../math/vector3";
 import { Color } from "./color";
 import { Material } from "./material";
 import { MaterialManager } from "./materialManager";
-import { Texture } from "./texture";
-import { TextureManager } from "./textureManager";
 
 export class Sprite {
     private _buffer: GLBuffer;
@@ -100,14 +98,14 @@ export class Sprite {
 
     public update(time: number) {}
 
-    public draw(shader: Shader) {
+    public draw(shader: Shader, model: Matrix4x4) {
         // this.load();
         // if (this._texture.isLoaded) {
         //     this.load();
         // }
 
         const modelLocation = shader.getUniformLocation("u_model");
-        gl.uniformMatrix4fv(modelLocation, false, new Float32Array(Matrix4x4.translation(this.position).data));
+        gl.uniformMatrix4fv(modelLocation, false, model.toFloat32Array());
 
         // set uniform
         const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");

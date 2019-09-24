@@ -8,6 +8,11 @@ export abstract class BaseComponent {
     public setOwner(owner: SimObject) {
         this._owner = owner;
     }
+
+    public get owner() {
+        return this._owner;
+    }
+
     public abstract load(): void;
 
     public abstract unload(): void;
