@@ -47,6 +47,17 @@ export class Zone {
         this._state = ZoneState.UPDATING;
     }
 
+    public unload() {
+        // this._scene = ZoneState
+        this._state = ZoneState.UNINITIALIZED;
+
+        this._scene.unload();
+    }
+
+    public onDeactived() {}
+
+    public onActived() {}
+
     public update(delta: number) {
         if (this._state === ZoneState.UPDATING) {
             this._scene.update(delta);

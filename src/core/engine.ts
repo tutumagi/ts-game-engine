@@ -138,7 +138,7 @@ export class Engine {
 
         void main() {
             // 在纹理上寻找对应的颜色值
-            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord);
+            gl_FragColor = u_tint * texture2D(u_diffuse, v_texCoord).rbga;
             // gl_FragColor = u_tint;
         }
         `;

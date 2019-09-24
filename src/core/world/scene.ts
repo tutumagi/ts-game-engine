@@ -28,6 +28,10 @@ export class Scene {
         this._root.load();
     }
 
+    public unload() {
+        this._root.unload();
+    }
+
     public update(delta: number) {
         this._root.update(delta);
     }
@@ -49,6 +53,7 @@ export class Scene {
  *          - Children ( SimObjects )
  *          - Parent
  *          - Scene
+ *          - Components
  *
  *  Zone ( level )
  *          - Id

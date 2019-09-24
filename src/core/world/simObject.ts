@@ -70,9 +70,19 @@ export class SimObject {
     }
 
     public load() {
+        if (this._isLoaded) {
+            return;
+        }
         this._isLoaded = true;
         this._children.forEach((c) => {
             c.load();
+        });
+    }
+
+    public unload() {
+        this._isLoaded = false;
+        this._children.forEach((c) => {
+            c.unload();
         });
     }
 
