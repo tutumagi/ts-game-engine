@@ -133,11 +133,27 @@ export class GLBuffer {
     }
 
     /**
+     * Replace the current data in this buffer with the provided data
+     * @param data The data to be loaded in this buffer
+     */
+    public setData(data: number[]) {
+        this.clearData();
+        this.pushBackData(data);
+    }
+
+    /**
      * Adds data to this buffer
      * @param data
      */
     public pushBackData(data: number[]) {
         this._data.push(...data);
+    }
+
+    /**
+     * Clears out all data in this buffer.
+     */
+    public clearData() {
+        this._data.length = 0;
     }
 
     /**

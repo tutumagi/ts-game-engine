@@ -9,9 +9,9 @@ export class Material {
     private _diffuseTextureName: string;
 
     private _diffuseTexture: Texture;
-    private _tint: Color;
+    private _tint?: Color;
 
-    public constructor(name: string, textureName: string, tint: Color) {
+    public constructor(name: string, textureName: string, tint?: Color) {
         this._name = name;
         this._diffuseTextureName = textureName;
         this._tint = tint;
@@ -30,6 +30,11 @@ export class Material {
     public draw(shader: Shader) {
         if (this._diffuseTexture.isLoaded) {
             const textureUnitIndex = 0;
+
+            // set uniform
+            const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");
+            // set uniform var the special value
+            gl.uniform4fv(colorPosition, this.tint.toFloatArray());
 
             this._diffuseTexture.activeAndBind(textureUnitIndex);
             const diffuseLocation = shader.getUniformLocation("u_diffuse");

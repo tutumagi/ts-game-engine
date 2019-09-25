@@ -56,7 +56,13 @@ export class SpriteComponent extends BaseComponent {
         this._width = data.width;
         this._height = data.height;
         // "dist/assets/textures/sloth.jpeg"
-        this._sprite = new Sprite(data.name, data.materialName, Color.white, this._width, this._height);
+        this._sprite = new Sprite(
+            data.name,
+            data.materialName,
+            new Color(255, 255, 255, 255),
+            this._width,
+            this._height,
+        );
     }
 
     public load() {

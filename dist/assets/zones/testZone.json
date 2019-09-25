@@ -31,7 +31,7 @@
             ],
             "children": [
                 {
-                    "name": "simObject",
+                    "name": "rose",
                     "transform": {
                         "position": {
                             "x": 60,
@@ -54,6 +54,26 @@
                             "rotation": {
                                 "z": 0.01
                             }
+                        }
+                    ],
+                    "children": [
+                        {
+                            "name": "duck",
+                            "transform": {
+                                "position": {
+                                    "x": 100,
+                                    "y": 100
+                                }
+                            },
+                            "components": [
+                                {
+                                    "type": "sprite",
+                                    "name": "duck",
+                                    "width": 51,
+                                    "height": 12,
+                                    "materialName": "dist/assets/textures/duck.png"
+                                }
+                            ]
                         }
                     ]
                 }

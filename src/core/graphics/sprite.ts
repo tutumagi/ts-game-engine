@@ -6,17 +6,19 @@ import { Vector3 } from "../math/vector3";
 import { Color } from "./color";
 import { Material } from "./material";
 import { MaterialManager } from "./materialManager";
+import { Vertex } from "./vertex";
 
 export class Sprite {
-    private _buffer: GLBuffer;
-    private _material: Material;
+    protected _buffer: GLBuffer;
+    protected _material: Material;
+    protected _vertices: Vertex[];
 
     public constructor(
-        private _name: string,
+        protected _name: string,
         textureName: string,
         private _tint: Color,
-        private _width: number = 1,
-        private _height: number = 1,
+        protected _width: number = 1,
+        protected _height: number = 1,
     ) {
         this._material = MaterialManager.getMaterial(_name, textureName, _tint);
     }
@@ -50,15 +52,15 @@ export class Sprite {
         //                 ];
         // prettier-ignore
 
-        const vertexs = [
-            // xyz
-            0, 0, 0,                            0, 0,
-            0, this._height, 0,                 0, 1,
-            this._width, this._height, 0,       1, 1,
+        this._vertices = [
+            // xyz, uv
+            new Vertex( 0, 0, 0,                           0, 0),
+            new Vertex(0, this._height, 0,                 0, 1),
+            new Vertex(this._width, this._height, 0,       1, 1),
 
-            this._width, this._height, 0,       1, 1,
-            this._width, 0, 0,                  1, 0,
-            0, 0, 0,                            0, 0,
+            new Vertex(this._width, this._height, 0,       1, 1),
+            new Vertex(this._width, 0, 0,                  1, 0),
+            new Vertex(0, 0, 0,                            0, 0),
         ];
 
         this._buffer = new GLBuffer();
@@ -77,7 +79,14 @@ export class Sprite {
             size: 2,
         };
 
-        this._buffer.pushBackData(vertexs);
+        this._buffer.pushBackData(
+            this._vertices.reduce(
+                (ret, cur) => {
+                    return ret.concat(cur.toArray());
+                },
+                [] as number[],
+            ),
+        );
 
         // the postion localtion is zero in every shader, so we hard code the loacation here
         // const positionLocation = 0;
@@ -97,11 +106,6 @@ export class Sprite {
 
         const modelLocation = shader.getUniformLocation("u_model");
         gl.uniformMatrix4fv(modelLocation, false, model.toFloat32Array());
-
-        // set uniform
-        const colorPosition: WebGLUniformLocation = shader.getUniformLocation("u_tint");
-        // set uniform var the special value
-        gl.uniform4fv(colorPosition, this._material.tint.toFloatArray());
 
         this._material.draw(shader);
 
