@@ -1,5 +1,6 @@
-import { TestZone } from "../game/testZone";
 import { AssetManager } from "./assets/assetManager";
+import { ComponentManager } from "./components/ComponentManager";
+import { SpriteComponent, SpriteComponentBuilder } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
 import { loadShaders } from "./gl/shader/baseShaders";
@@ -25,6 +26,8 @@ export class Engine {
      */
     public start() {
         AssetManager.initialize();
+        ZoneManager.initialize();
+        ComponentManager.registerBuilder(new SpriteComponentBuilder());
 
         this._canvas = GLUtilities.initialize();
 

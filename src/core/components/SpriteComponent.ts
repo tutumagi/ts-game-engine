@@ -74,4 +74,4 @@ export class SpriteComponent extends BaseComponent {
     }
 }
 
-ComponentManager.registerBuilder(new SpriteComponentBuilder());
+// ComponentManager.registerBuilder(new SpriteComponentBuilder());

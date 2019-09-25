@@ -1,5 +1,5 @@
 export class Vector3 {
-    constructor(private _x: number, private _y: number, private _z: number) {}
+    constructor(private _x: number = 0, private _y: number = 0, private _z: number = 0) {}
 
     public static ZERO = new Vector3(0, 0, 0);
     public static IDENTIFY = new Vector3(1, 1, 1);
@@ -47,13 +47,13 @@ export class Vector3 {
     }
 
     public setFromJSON(json: any) {
-        if (this._x !== undefined) {
+        if (json.x !== undefined) {
             this._x = parseFloat(json.x);
         }
-        if (this._y !== undefined) {
+        if (json.y !== undefined) {
             this._y = parseFloat(json.y);
         }
-        if (this._z !== undefined) {
+        if (json.z !== undefined) {
             this._z = parseFloat(json.z);
         }
     }

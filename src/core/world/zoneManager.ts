@@ -1,10 +1,11 @@
 import { AssetManager, MESSAGE_ASSET_LOADER_ASSET_LOADED } from "../assets/assetManager";
 import { JSONAsset } from "../assets/loaders/jsonAssetLoader";
 import { Shader } from "../gl/shader";
+import { IMessageHandler } from "../message/IMessageHandler";
 import { Message } from "../message/message";
 import { Zone } from "./zone";
 
-export class ZoneManager {
+export class ZoneManager implements IMessageHandler {
     private static _globalZoneID: number = -1;
     // private static _zones: { [id: number]: Zone } = {};
     private static _registerZones: { [id: number]: string } = {};
@@ -39,18 +40,18 @@ export class ZoneManager {
         if (ZoneManager._registerZones[id] !== undefined) {
             if (AssetManager.isAssetLoaded(ZoneManager._registerZones[id])) {
                 const asset = AssetManager.getAsset(ZoneManager._registerZones[id]);
-
                 ZoneManager.loadZone(asset);
             } else {
                 Message.subscribe(
                     MESSAGE_ASSET_LOADER_ASSET_LOADED + ZoneManager._registerZones[id],
-                    ZoneManager._inst.onMessage.bind(ZoneManager._inst),
+                    ZoneManager._inst,
                 );
+                AssetManager.loadAsset(ZoneManager._registerZones[id]);
             }
         }
     }
 
-    private onMessage(message: Message) {
+    public onMessage(message: Message) {
         if (message.code.indexOf(MESSAGE_ASSET_LOADER_ASSET_LOADED) != -1) {
             ZoneManager.loadZone(message.context as JSONAsset);
         }
