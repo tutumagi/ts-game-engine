@@ -2,6 +2,7 @@ import { Message } from "../message/message";
 import { IAsset } from "./IAsset";
 import { IAssetLoader } from "./IAssetLoader";
 import { ImageAssetLoader } from "./loaders/imageAssetLoader";
+import { JSONAssetLoader } from "./loaders/jsonAssetLoader";
 
 export const MESSAGE_ASSET_LOADER_ASSET_LOADED = "MESSAGE_ASSET_LOADER_ASSET_LOADED";
 
@@ -13,6 +14,7 @@ export class AssetManager {
 
     public static initialize() {
         AssetManager.registerLoader(new ImageAssetLoader());
+        AssetManager.registerLoader(new JSONAssetLoader());
     }
 
     public static registerLoader(loader: IAssetLoader) {

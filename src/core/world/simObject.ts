@@ -15,7 +15,7 @@ export class SimObject {
     // depence this._parent
     private _worldMatrix: Matrix4x4 = Matrix4x4.identity();
 
-    private _components: { [name: string]: BaseComponent } = {};
+    private _components: BaseComponent[] = [];
 
     public name: string;
 
@@ -75,12 +75,12 @@ export class SimObject {
 
     public addComponent(component: BaseComponent) {
         component.setOwner(this);
-        this._components[component.name] = component;
+        this._components.push(component);
     }
 
     public getComponent<T extends BaseComponent>(cls: typeof BaseComponent): T | undefined {
         let ret: T;
-        Object.values(this._components).some((v) => {
+        this._components.some((v) => {
             if (v instanceof cls) {
                 ret = v as T;
                 return true;
@@ -96,7 +96,7 @@ export class SimObject {
         }
         this._isLoaded = true;
 
-        Object.values(this._components).forEach((c) => {
+        this._components.forEach((c) => {
             c.load();
         });
         this._children.forEach((c) => {
@@ -107,7 +107,7 @@ export class SimObject {
     public unload() {
         this._isLoaded = false;
 
-        Object.values(this._components).forEach((c) => {
+        this._components.forEach((c) => {
             c.unload();
         });
         this._children.forEach((c) => {

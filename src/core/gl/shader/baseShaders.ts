@@ -1,6 +1,7 @@
 import { Shader } from "../shader";
 
 function loadVertexShader() {
+    // tslint:disable-next-line: max-line-length
     // https://stackoverflow.com/questions/17537879/in-webgl-what-are-the-differences-between-an-attribute-a-uniform-and-a-varying
     // attribute vs uniform vs varying
     /**

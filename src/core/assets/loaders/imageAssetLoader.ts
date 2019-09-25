@@ -25,8 +25,7 @@ export class ImageAssetLoader implements IAssetLoader {
         return ["png", "gif", "jpg", "jpeg"];
     }
 
-    // @ts-ignore
-    public loadAsset(assetName: string): IAsset {
+    public loadAsset(assetName: string) {
         const image: HTMLImageElement = new Image();
 
         image.onload = this.onImageLoaded.bind(this, assetName, image);

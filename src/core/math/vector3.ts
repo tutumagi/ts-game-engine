@@ -45,4 +45,16 @@ export class Vector3 {
     public copy(): Vector3 {
         return new Vector3(this._x, this._y, this._z);
     }
+
+    public setFromJSON(json: any) {
+        if (this._x !== undefined) {
+            this._x = parseFloat(json.x);
+        }
+        if (this._y !== undefined) {
+            this._y = parseFloat(json.y);
+        }
+        if (this._z !== undefined) {
+            this._z = parseFloat(json.z);
+        }
+    }
 }

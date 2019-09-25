@@ -33,7 +33,7 @@ export class Engine {
         this._shader = loadShaders();
         this._shader.use();
 
-        ZoneManager.changeZoneByZone(new TestZone());
+        ZoneManager.changeZoneById(0);
 
         this.resize();
         this.loop(0);

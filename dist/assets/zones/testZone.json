@@ -1,0 +1,36 @@
+{
+    "name": "TestZone",
+    "id": 0,
+    "description": "the test zone",
+    "objects": [
+        {
+            "name": "parentObject",
+            "transform": {
+                "position": {
+                    "x": 100,
+                    "y": 100
+                }
+            },
+            "children": [
+                {
+                    "name": "simObject",
+                    "transform": {
+                        "position": {
+                            "x": 60,
+                            "y": 100
+                        }
+                    },
+                    "components": [
+                        {
+                            "type": "sprite",
+                            "name": "rose",
+                            "width": 216,
+                            "height": 233,
+                            "materialName": "dist/assets/textures/rose.jpg"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
