@@ -1,4 +1,6 @@
 import { AssetManager } from "./assets/assetManager";
+import { BehaviourManager } from "./behaviours/BehaviourManager";
+import { RotationBehaviour, RotationBehaviourBuilder } from "./behaviours/RotationBehaviour";
 import { ComponentManager } from "./components/ComponentManager";
 import { SpriteComponent, SpriteComponentBuilder } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
@@ -28,6 +30,7 @@ export class Engine {
         AssetManager.initialize();
         ZoneManager.initialize();
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
+        BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
 
         this._canvas = GLUtilities.initialize();
 

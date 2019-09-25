@@ -57,4 +57,25 @@ export class Vector3 {
             this._z = parseFloat(json.z);
         }
     }
+
+    public add(v: Vector3): Vector3 {
+        this._x += v.x;
+        this._y += v.y;
+        this._z += v.z;
+        return this;
+    }
+
+    public multiply(v: Vector3): Vector3 {
+        this._x *= v.x;
+        this._y *= v.y;
+        this._z *= v.z;
+        return this;
+    }
+
+    public divide(v: Vector3): Vector3 {
+        this._x /= v.x;
+        this._y /= v.y;
+        this._z /= v.z;
+        return this;
+    }
 }

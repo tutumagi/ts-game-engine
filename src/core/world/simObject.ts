@@ -1,3 +1,4 @@
+import { BaseBehaviour } from "../behaviours/BaseBehaviour";
 import { BaseComponent } from "../components/BaseComponent";
 import { Shader } from "../gl/shader";
 import { Matrix4x4 } from "../math/matrix4x4";
@@ -16,6 +17,7 @@ export class SimObject {
     private _worldMatrix: Matrix4x4 = Matrix4x4.identity();
 
     private _components: BaseComponent[] = [];
+    private _behaviours: BaseBehaviour[] = [];
 
     public name: string;
 
@@ -78,6 +80,11 @@ export class SimObject {
         this._components.push(component);
     }
 
+    public addBehaviour(behaviour: BaseBehaviour) {
+        behaviour.setOwner(this);
+        this._behaviours.push(behaviour);
+    }
+
     public getComponent<T extends BaseComponent>(cls: typeof BaseComponent): T | undefined {
         let ret: T;
         this._components.some((v) => {
@@ -119,8 +126,11 @@ export class SimObject {
         this._localMatrix = this.transform.getTransformMatrix();
         this.updateWorldMatrix(this._parent !== undefined ? this._parent._worldMatrix : undefined);
 
-        Object.values(this._components).forEach((c) => {
+        this._components.forEach((c) => {
             c.update(delta);
+        });
+        this._behaviours.forEach((b) => {
+            b.update(delta);
         });
         this._children.forEach((c) => {
             c.update(delta);
@@ -128,7 +138,7 @@ export class SimObject {
     }
 
     public render(shader: Shader) {
-        Object.values(this._components).forEach((c) => {
+        this._components.forEach((c) => {
             c.render(shader);
         });
         this._children.forEach((c) => {

@@ -7,10 +7,28 @@
             "name": "parentObject",
             "transform": {
                 "position": {
-                    "x": 100,
-                    "y": 100
+                    "x": 300,
+                    "y": 300
                 }
             },
+            "components": [
+                {
+                    "type": "sprite",
+                    "name": "sloth",
+                    "width": 216,
+                    "height": 233,
+                    "materialName": "dist/assets/textures/sloth.jpeg"
+                }
+            ],
+            "behavious": [
+                {
+                    "name": "rotateX",
+                    "type": "rotation",
+                    "rotation": {
+                        "z": 0.01
+                    }
+                }
+            ],
             "children": [
                 {
                     "name": "simObject",
@@ -27,6 +45,15 @@
                             "width": 216,
                             "height": 233,
                             "materialName": "dist/assets/textures/rose.jpg"
+                        }
+                    ],
+                    "behavious": [
+                        {
+                            "name": "rotateX",
+                            "type": "rotation",
+                            "rotation": {
+                                "z": 0.01
+                            }
                         }
                     ]
                 }

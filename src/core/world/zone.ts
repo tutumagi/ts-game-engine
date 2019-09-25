@@ -1,3 +1,5 @@
+import { BaseBehaviour } from "../behaviours/BaseBehaviour";
+import { BehaviourManager } from "../behaviours/BehaviourManager";
 import { BaseComponent } from "../components/BaseComponent";
 import { ComponentManager } from "../components/ComponentManager";
 import { Shader } from "../gl/shader";
@@ -100,6 +102,11 @@ export class Zone {
         if (dataSection.components) {
             dataSection.components.forEach((componentData) => {
                 simObject.addComponent(ComponentManager.extractComponent(componentData) as BaseComponent);
+            });
+        }
+        if (dataSection.behavious) {
+            dataSection.behavious.forEach((behaviousData) => {
+                simObject.addBehaviour(BehaviourManager.extractBehaviour(behaviousData) as BaseBehaviour);
             });
         }
 
