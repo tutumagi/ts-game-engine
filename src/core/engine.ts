@@ -1,11 +1,12 @@
 import { AssetManager } from "./assets/assetManager";
 import { BehaviourManager } from "./behaviours/BehaviourManager";
 import { RotationBehaviour, RotationBehaviourBuilder } from "./behaviours/RotationBehaviour";
+import { AnimateSpriteComponentBuilder } from "./components/AnimateSpriteComponent";
 import { ComponentManager } from "./components/ComponentManager";
 import { SpriteComponent, SpriteComponentBuilder } from "./components/SpriteComponent";
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
-import { loadShaders } from "./gl/shader/baseShaders";
+import { loadShaders } from "./gl/shader/basicShaders";
 import { Matrix4x4 } from "./math/matrix4x4";
 import { MessageBus } from "./message/messageBus";
 import { ZoneManager } from "./world/zoneManager";
@@ -29,7 +30,10 @@ export class Engine {
     public start() {
         AssetManager.initialize();
         ZoneManager.initialize();
+
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
+        ComponentManager.registerBuilder(new AnimateSpriteComponentBuilder());
+
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
 
         this._canvas = GLUtilities.initialize();

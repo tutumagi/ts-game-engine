@@ -1,3 +1,5 @@
 {
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "'Cascadia Code', Monaco, 'Courier New', monospace"
 }

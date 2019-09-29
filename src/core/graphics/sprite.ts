@@ -50,8 +50,8 @@ export class Sprite {
         //                  this._width, 0, 0,             1.0,    0,
         //                  0, 0, 0,                       0,      0,
         //                 ];
-        // prettier-ignore
 
+        // prettier-ignore
         this._vertices = [
             // xyz, uv
             new Vertex( 0, 0, 0,                           0, 0),
@@ -79,7 +79,28 @@ export class Sprite {
             size: 2,
         };
 
-        this._buffer.pushBackData(
+        // this._buffer.pushBackData(
+        //     this._vertices.reduce(
+        //         (ret, cur) => {
+        //             return ret.concat(cur.toArray());
+        //         },
+        //         [] as number[],
+        //     ),
+        // );
+
+        // the postion localtion is zero in every shader, so we hard code the loacation here
+        // const positionLocation = 0;
+        this._buffer.addAttributeLocation(positionAttribute);
+        this._buffer.addAttributeLocation(texCoordAttribute);
+        // this._buffer.upload();
+        // this._buffer.unbind();
+    }
+
+    protected upload() {}
+
+    public update(time: number) {
+        // this.upload();
+        this._buffer.setData(
             this._vertices.reduce(
                 (ret, cur) => {
                     return ret.concat(cur.toArray());
@@ -88,15 +109,9 @@ export class Sprite {
             ),
         );
 
-        // the postion localtion is zero in every shader, so we hard code the loacation here
-        // const positionLocation = 0;
-        this._buffer.addAttributeLocation(positionAttribute);
-        this._buffer.addAttributeLocation(texCoordAttribute);
         this._buffer.upload();
         this._buffer.unbind();
     }
-
-    public update(time: number) {}
 
     public draw(shader: Shader, model: Matrix4x4) {
         // this.load();

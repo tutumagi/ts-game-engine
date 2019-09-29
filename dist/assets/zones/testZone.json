@@ -25,7 +25,7 @@
                     "name": "rotateX",
                     "type": "rotation",
                     "rotation": {
-                        "z": 0.01
+                        "z": 0.0
                     }
                 }
             ],
@@ -52,7 +52,7 @@
                             "name": "rotateX",
                             "type": "rotation",
                             "rotation": {
-                                "z": 0.01
+                                "z": 0.0
                             }
                         }
                     ],
@@ -67,11 +67,16 @@
                             },
                             "components": [
                                 {
-                                    "type": "sprite",
+                                    "type": "animateSprite",
                                     "name": "duck",
                                     "width": 51,
                                     "height": 12,
-                                    "materialName": "dist/assets/textures/duck.png"
+                                    "materialName": "dist/assets/textures/duck.png",
+                                    "frameWidth": 17,
+                                    "frameHeight": 12,
+                                    "frameCount": 3,
+                                    "frameSequence": [0, 1, 2],
+                                    "frameTime": 1000
                                 }
                             ]
                         }
