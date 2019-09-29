@@ -76,6 +76,23 @@ export class AnimatedSprite extends Sprite {
         }
 
         console.log(`animatesprite `, this._frameUVs);
+
+        this.updateVertex();
+    }
+
+    public updateVertex() {
+        const curFrameUV = this._frameUVs[this._frameSequence[this._currentFrameIdx]];
+        // prettier-ignore
+        this._vertices = [
+                    // xyz, uv
+                    new Vertex( 0, 0, 0,                                curFrameUV.min.x, curFrameUV.min.y),
+                    new Vertex(0, this._frameHeight, 0,                 curFrameUV.min.x, curFrameUV.max.y),
+                    new Vertex(this._frameWidth, this._frameHeight, 0,  curFrameUV.max.x, curFrameUV.max.y),
+
+                    new Vertex(this._frameWidth, this._frameHeight, 0,  curFrameUV.max.x, curFrameUV.max.y),
+                    new Vertex(this._frameWidth, 0, 0,                  curFrameUV.max.x, curFrameUV.min.y),
+                    new Vertex(0, 0, 0,                                 curFrameUV.min.x, curFrameUV.min.y),
+                ];
     }
 
     public update(delta: number) {
@@ -90,18 +107,7 @@ export class AnimatedSprite extends Sprite {
 
             // console.log(`animate sprite cur frame index:`, this._currentFrameIdx);
 
-            const curFrameUV = this._frameUVs[this._frameSequence[this._currentFrameIdx]];
-            // prettier-ignore
-            this._vertices = [
-                        // xyz, uv
-                        new Vertex( 0, 0, 0,                                curFrameUV.min.x, curFrameUV.min.y),
-                        new Vertex(0, this._frameHeight, 0,                 curFrameUV.min.x, curFrameUV.max.y),
-                        new Vertex(this._frameWidth, this._frameHeight, 0,  curFrameUV.max.x, curFrameUV.max.y),
-
-                        new Vertex(this._frameWidth, this._frameHeight, 0,  curFrameUV.max.x, curFrameUV.max.y),
-                        new Vertex(this._frameWidth, 0, 0,                  curFrameUV.max.x, curFrameUV.min.y),
-                        new Vertex(0, 0, 0,                                 curFrameUV.min.x, curFrameUV.min.y),
-                    ];
+            this.updateVertex();
         }
 
         super.update(delta);
