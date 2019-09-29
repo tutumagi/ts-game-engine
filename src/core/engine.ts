@@ -78,7 +78,14 @@ export class Engine {
         }
     }
 
-    private loop(delta: number) {
+    private _now: number = 0;
+    private loop(time: number) {
+        if (this._now == 0) {
+            this._now = time;
+        }
+        const delta = time - this._now;
+        this._now = time;
+
         MessageBus.update(delta);
 
         /**

@@ -88,9 +88,9 @@ export class AnimatedSprite extends Sprite {
                 this._currentFrameIdx = 0;
             }
 
-            console.log(`animate sprite cur frame index:`, this._currentFrameIdx);
+            // console.log(`animate sprite cur frame index:`, this._currentFrameIdx);
 
-            const curFrameUV = this._frameUVs[this._frameSequence[this._currentTime]];
+            const curFrameUV = this._frameUVs[this._frameSequence[this._currentFrameIdx]];
             // prettier-ignore
             this._vertices = [
                         // xyz, uv
