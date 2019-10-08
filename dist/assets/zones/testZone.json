@@ -76,7 +76,7 @@
                                     "frameHeight": 12,
                                     "frameCount": 3,
                                     "frameSequence": [0, 1, 2],
-                                    "frameTime": 333
+                                    "frameTime": 100
                                 }
                             ]
                         }

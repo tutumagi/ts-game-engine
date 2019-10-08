@@ -39,6 +39,9 @@ export class Engine {
         this._canvas = GLUtilities.initialize();
 
         gl.clearColor(0, 0, 0, 1);
+        // 开启 alpha 混合渲染
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         this._shader = loadShaders();
         this._shader.use();
