@@ -1,4 +1,5 @@
 import { AssetManager } from "./assets/assetManager";
+import { AudioManager } from "./audio/AudioManager";
 import { BehaviourManager } from "./behaviours/BehaviourManager";
 import { KeyboardMovementBehaviourBuilder } from "./behaviours/keyboardMovementBehaviour";
 import { RotationBehaviour, RotationBehaviourBuilder } from "./behaviours/RotationBehaviour";
@@ -94,6 +95,9 @@ export class Engine implements IMessageHandler {
         if (message.code === "MOUSE_UP") {
             const context = message.context as MouseContext;
             document.title = `POS: [${context.position.x}, ${context.position.y}]`;
+
+            AudioManager.loadSoundFile("flap", "dist/assets/sounds/flap.mp3", false);
+            AudioManager.playSound("flap");
         }
     }
 
