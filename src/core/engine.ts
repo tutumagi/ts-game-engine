@@ -7,14 +7,17 @@ import { SpriteComponent, SpriteComponentBuilder } from "./components/SpriteComp
 import { gl, GLUtilities } from "./gl/gl";
 import { Shader } from "./gl/shader";
 import { loadShaders } from "./gl/shader/basicShaders";
+import { InputManager, MouseContext } from "./input/inputManager";
 import { Matrix4x4 } from "./math/matrix4x4";
+import { IMessageHandler } from "./message/IMessageHandler";
+import { Message } from "./message/message";
 import { MessageBus } from "./message/messageBus";
 import { ZoneManager } from "./world/zoneManager";
 
 /**
  * The main game engine class
  */
-export class Engine {
+export class Engine implements IMessageHandler {
     private _canvas: HTMLCanvasElement;
     private _shader: Shader;
     private _projection: Matrix4x4;
@@ -29,7 +32,11 @@ export class Engine {
      */
     public start() {
         AssetManager.initialize();
+        InputManager.initialize();
         ZoneManager.initialize();
+
+        Message.subscribe("MOUSE_UP", this);
+        Message.subscribe("MOUSE_DOWN", this);
 
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
         ComponentManager.registerBuilder(new AnimateSpriteComponentBuilder());
@@ -78,6 +85,13 @@ export class Engine {
              * 但是在那之后就需要你自己设置。当你改变画布大小就需要告诉WebGL新的视域设置。
              */
             gl.viewport(0, 0, this._canvas.width, this._canvas.height);
+        }
+    }
+
+    public onMessage(message: Message): void {
+        if (message.code === "MOUSE_UP") {
+            const context = message.context as MouseContext;
+            document.title = `POS: [${context.position.x}, ${context.position.y}]`;
         }
     }
 
