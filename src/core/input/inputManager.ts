@@ -3,7 +3,7 @@ import { Message } from "../message/message";
 
 export enum Keys {
     LEFT = 37,
-    UP = 28,
+    UP = 38,
     RIGHT = 39,
     DOWN = 40,
 }
@@ -34,7 +34,7 @@ export class InputManager {
         }
 
         window.addEventListener("keydown", InputManager.onKeyDown);
-        window.addEventListener("keyup", InputManager.onKeyDown);
+        window.addEventListener("keyup", InputManager.onKeyUp);
         window.addEventListener("mousemove", InputManager.onMouseMove);
         window.addEventListener("mousedown", InputManager.onMouseDown);
         window.addEventListener("mouseup", InputManager.onMouseUp);
@@ -52,14 +52,12 @@ export class InputManager {
         InputManager._keys[event.keyCode] = true;
         event.preventDefault();
         event.stopPropagation();
-        return false;
     }
 
     public static onKeyUp(event: KeyboardEvent) {
         InputManager._keys[event.keyCode] = false;
         event.preventDefault();
         event.stopPropagation();
-        return false;
     }
 
     private static onMouseMove(event: MouseEvent) {

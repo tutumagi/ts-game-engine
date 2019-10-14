@@ -1,5 +1,6 @@
 import { AssetManager } from "./assets/assetManager";
 import { BehaviourManager } from "./behaviours/BehaviourManager";
+import { KeyboardMovementBehaviourBuilder } from "./behaviours/keyboardMovementBehaviour";
 import { RotationBehaviour, RotationBehaviourBuilder } from "./behaviours/RotationBehaviour";
 import { AnimateSpriteComponentBuilder } from "./components/AnimateSpriteComponent";
 import { ComponentManager } from "./components/ComponentManager";
@@ -42,6 +43,7 @@ export class Engine implements IMessageHandler {
         ComponentManager.registerBuilder(new AnimateSpriteComponentBuilder());
 
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
+        BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
 
         this._canvas = GLUtilities.initialize();
 

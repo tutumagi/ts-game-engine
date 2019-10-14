@@ -78,6 +78,13 @@
                                     "frameSequence": [0, 1, 2],
                                     "frameTime": 100
                                 }
+                            ],
+                            "behavious": [
+                                {
+                                    "name": "move",
+                                    "type": "keyboardMovement",
+                                    "speed": 1.0
+                                }
                             ]
                         }
                     ]
